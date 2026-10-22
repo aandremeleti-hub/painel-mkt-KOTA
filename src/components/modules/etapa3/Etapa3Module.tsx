@@ -21,14 +21,11 @@ export const Etapa3Module: React.FC = () => {
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             <span>ETAPA 3 • MATRIZ PREDITIVA & AÇÕES EM 1 CLIQUE</span>
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2.5">
-            <span>Inteligência Algorítmica v2.0</span>
-            <span className="text-xs font-mono font-medium px-2 py-0.5 rounded bg-cyan-950/70 border border-cyan-800/60 text-cyan-300">
-              Meta MCP + WABA + ERP
-            </span>
+          <h1 className="text-2xl font-black text-white tracking-tight">
+            Inteligência Preditiva
           </h1>
           <p className="text-sm text-text-secondary mt-1.5 max-w-2xl leading-relaxed">
-            Painel preditivo avançado que correlaciona microdados de leilão publicitário, telemetria de sinal da API de Conversões e fechamento comercial real no ERP Kota Dental.
+            Painel preditivo avançado que correlaciona o desempenho dos anúncios, a velocidade de atendimento no WhatsApp e o faturamento real no ERP Kota Dental.
           </p>
         </div>
 

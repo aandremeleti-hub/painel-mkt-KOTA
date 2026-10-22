@@ -35,7 +35,7 @@ export const CommercialFunnelPipeline: React.FC = () => {
             Funil Comercial de Ponta a Ponta (7 Etapas)
           </h2>
           <p className="text-xs text-zinc-400 mt-1 max-w-2xl leading-relaxed">
-            Rastreamento integrado solicitado pela diretoria (Waldir Ward e Lucas): do primeiro clique em anúncios no Instagram até a emissão da nota fiscal e faturamento no ERP Kota Dental.
+            Rastreamento integrado solicitado pela diretoria da Kota Saúde e Beleza: do primeiro clique em anúncios no Instagram até a emissão da nota fiscal e faturamento no ERP Kota Dental.
           </p>
         </div>
 
@@ -257,9 +257,11 @@ export const CommercialFunnelPipeline: React.FC = () => {
                       </span>
                       <button
                         onClick={() => openMetricModal(stage.explanationMetricId)}
-                        className="text-[11px] text-zinc-400 hover:text-amber-400 underline flex items-center gap-0.5"
+                        className="group flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700/60 hover:border-zinc-500 rounded-lg shadow-sm transition-all duration-200 transform hover:scale-[1.03] active:scale-[0.98]"
+                        title={`Entender Etapa 0${stage.order}: ${stage.name}`}
                       >
-                        [ ? Explicar ]
+                        <HelpCircle className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-12 transition-transform duration-200" />
+                        <span>Entender Etapa</span>
                       </button>
                     </div>
                   </div>
@@ -296,9 +298,9 @@ export const CommercialFunnelPipeline: React.FC = () => {
 
       {/* Selected Stage Detail Insight Drawer */}
       {selectedStage && (
-        <div className="bg-[#101010] border border-zinc-800/90 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
+        <div className="bg-[#101010] border border-zinc-800/90 rounded-xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">
                 Detalhe da Etapa 0{selectedStage.order}: {selectedStage.name}
               </span>
@@ -307,9 +309,33 @@ export const CommercialFunnelPipeline: React.FC = () => {
             <p className="text-xs text-zinc-300 max-w-3xl leading-relaxed">
               {selectedStage.description}
             </p>
+
+            {/* Clarification for Stage 01: CPC vs CPL breakdown */}
+            {selectedStage.order === 1 && (
+              <div className="mt-3 p-3 rounded-lg bg-[#161616] border border-amber-500/30 space-y-1.5">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-amber-400 font-mono">
+                  <Info className="w-3.5 h-3.5" />
+                  <span>Esclarecimento Técnico de Custo: CPC vs CPL</span>
+                </div>
+                <div className="flex flex-wrap items-center gap-3 text-xs font-mono">
+                  <span className="text-zinc-300">
+                    • <strong className="text-white">R$ 1,53</strong> é o <span className="text-amber-400">CPC</span> (Custo por Clique no anúncio).
+                  </span>
+                  <span className="text-zinc-300">
+                    • <strong className="text-emerald-400">R$ 6,42</strong> é o <span className="text-emerald-400">CPL Direto</span> (Custo por Lead na campanha direta).
+                  </span>
+                  <span className="text-zinc-300">
+                    • <strong className="text-cyan-400">R$ 9,66</strong> é o <span className="text-cyan-400">CPL Geral</span> (consolidado de todas as fontes).
+                  </span>
+                </div>
+                <p className="text-[11px] text-zinc-400 leading-normal">
+                  Essa distinção comprova que o lead não custou caro: com R$ 1,53 compramos a atenção qualificada e convertemos em leads diretos a R$ 6,42.
+                </p>
+              </div>
+            )}
           </div>
 
-          <div className="flex items-center gap-3 self-end md:self-auto shrink-0">
+          <div className="flex items-center gap-4 self-end lg:self-center shrink-0">
             <div className="text-right">
               <div className="text-[10px] text-zinc-500 font-mono">CUSTO POR AVANÇO</div>
               <div className="text-sm font-mono font-bold text-amber-300">
@@ -319,9 +345,9 @@ export const CommercialFunnelPipeline: React.FC = () => {
 
             <button
               onClick={() => openMetricModal(selectedStage.explanationMetricId)}
-              className="px-3.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-semibold text-xs transition-all shadow flex items-center gap-1.5"
+              className="px-4 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-semibold text-xs transition-all shadow-md hover:shadow-amber-500/20 hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
             >
-              <HelpCircle className="w-3.5 h-3.5" />
+              <HelpCircle className="w-4 h-4" />
               <span>Ver Diagnóstico Completo</span>
             </button>
           </div>

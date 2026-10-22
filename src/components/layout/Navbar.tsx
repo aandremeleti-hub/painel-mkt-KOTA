@@ -5,8 +5,7 @@ import {
   Layers, 
   Cpu, 
   Calendar,
-  Sparkles,
-  Server
+  Sparkles
 } from 'lucide-react';
 
 export type DashboardTab = 'overview' | 'media' | 'funnel' | 'predictive';
@@ -25,7 +24,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onTabChange,
   selectedPeriod,
   onPeriodChange,
-  mcpOnline = true,
 }) => {
   return (
     <header className="sticky top-0 z-40 w-full bg-[#080808]/95 backdrop-blur-md border-b border-border">
@@ -101,11 +99,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               <Cpu className="w-3.5 h-3.5 text-indicator-green" />
-              <span>Matriz Preditiva v2.0</span>
+              <span>Matriz Preditiva</span>
             </button>
           </nav>
 
-          {/* Right Controls: Period Selector & MCP Status Badge */}
+          {/* Right Controls: Period Selector */}
           <div className="flex items-center gap-3">
             {/* Period Selector */}
             <div className="flex items-center bg-[#141414] border border-border rounded-lg p-0.5 text-xs">
@@ -138,20 +136,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'text-text-muted hover:text-zinc-200'
                 }`}
               >
-                Setembro (30d)
+                Consolidado (30d)
               </button>
-            </div>
-
-            {/* MCP Sidecar Ping Badge */}
-            <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-indicator-green text-xs font-mono">
-              <span className="relative flex h-2 w-2">
-                {mcpOnline && (
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indicator-green opacity-75" />
-                )}
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-indicator-green" />
-              </span>
-              <Server className="w-3 h-3 text-indicator-green ml-0.5" />
-              <span className="text-[11px] font-medium">Meta MCP Online</span>
             </div>
           </div>
         </div>

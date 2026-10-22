@@ -7,14 +7,16 @@ export interface BusinessView {
 
 export interface TechnicalView {
   officialMetric: string;
-  mcpEndpoint: string;
-  formula: string;
   optimizationEvent: string;
   auctionParameters?: string;
+  operationalNotes?: string;
+  mcpEndpoint?: string;
+  formula?: string;
 }
 
 export interface KotaDiagnosis {
-  septValue: string;
+  periodValue?: string;
+  septValue?: string;
   aprilValue?: string;
   highlight?: string;
   status: MetricDiagnosisStatus;
@@ -24,9 +26,9 @@ export interface KotaDiagnosis {
 export interface RecommendedAction {
   title: string;
   description: string;
-  mcpCommand: string;
   buttonLabel: string;
   actionId: string;
+  mcpCommand?: string;
 }
 
 export interface MetricExplanation {

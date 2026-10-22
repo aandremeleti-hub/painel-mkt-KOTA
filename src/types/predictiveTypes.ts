@@ -1,4 +1,5 @@
 export type MatrixPillar = 
+  | 'Desempenho dos Anúncios & Audiência'
   | 'Leilão & Mercado'
   | 'Sinais & Telemetria CAPI'
   | 'Atendimento & Conversão WhatsApp'
@@ -9,8 +10,8 @@ export type FeatureStatus = 'healthy' | 'warning' | 'critical' | 'active' | 'in_
 export interface OneClickAction {
   id: string;
   label: string;
-  commandSnippet: string;
-  mcpTool: string;
+  commandSnippet?: string;
+  mcpTool?: string;
   description: string;
   expectedOutcome: string;
   payload?: Record<string, any>;
@@ -24,8 +25,10 @@ export interface PredictiveMatrixItem {
   status: FeatureStatus;
   valorAtual: string;
   benchmark: string;
-  formula: string;
-  endpointMCP: string;
+  formula?: string;
+  comoAvalia: string;
+  resumoCard: string;
+  endpointMCP?: string;
   impactoNegocio: string;
   confiancaScore: number; // 0 a 100%
   metricaInedita?: string;
@@ -36,14 +39,21 @@ export interface QuickActionItem {
   id: string;
   title: string;
   badge: string;
-  mcpTool: string;
-  endpoint: string;
+  categoryBadge?: string;
+  mcpTool?: string;
+  endpoint?: string;
   description: string;
   projectedImpact: string;
+  businessHighlights?: string[];
   buttonLabel: string;
   severity: 'healthy' | 'warning' | 'critical';
-  payload: Record<string, any>;
-  responsePayload: Record<string, any>;
+  appliedSummary?: {
+    title: string;
+    description: string;
+    metrics: { label: string; value: string }[];
+  };
+  payload?: Record<string, any>;
+  responsePayload?: Record<string, any>;
 }
 
 export interface PredictiveSummary {

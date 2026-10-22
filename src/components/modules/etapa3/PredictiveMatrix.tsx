@@ -1,14 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import { 
   HelpCircle, 
-  Server, 
   Search, 
   Filter, 
   CheckCircle, 
   AlertTriangle, 
   AlertCircle, 
   Activity,
-  Layers
+  Layers,
+  Target,
+  Sliders
 } from 'lucide-react';
 import { predictiveFeaturesData } from '../../../data/etapa3Data';
 import { MatrixPillar, PredictiveMatrixItem } from '../../../types/predictiveTypes';
@@ -21,24 +22,29 @@ export const PredictiveMatrix: React.FC = () => {
   const [selectedPillar, setSelectedPillar] = useState<PillarTabOption>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Pillar tabs definition
+  // Pillar tabs definition with the renamed pillar
   const pillarTabs: { key: PillarTabOption; label: string; count: number }[] = [
-    { key: 'ALL', label: 'Todas as Funcionalidades', count: 20 },
-    { key: 'Leilão & Mercado', label: 'Pilar 1: Leilão & Mercado', count: 7 },
-    { key: 'Sinais & Telemetria CAPI', label: 'Pilar 2: Sinais & CAPI', count: 5 },
-    { key: 'Atendimento & Conversão WhatsApp', label: 'Pilar 3: WhatsApp & CRM', count: 5 },
-    { key: 'Gestão de Caixa & Faturamento Real', label: 'Pilar 4: Caixa & Receita', count: 3 },
+    { key: 'ALL', label: 'Todos os Indicadores', count: 20 },
+    { key: 'Desempenho dos Anúncios & Audiência', label: '1. Anúncios & Audiência', count: 7 },
+    { key: 'Sinais & Telemetria CAPI', label: '2. Sinais & CAPI', count: 5 },
+    { key: 'Atendimento & Conversão WhatsApp', label: '3. WhatsApp & Vendas', count: 5 },
+    { key: 'Gestão de Caixa & Faturamento Real', label: '4. Caixa & Faturamento', count: 3 },
   ];
 
   // Filtered list
   const filteredFeatures = useMemo(() => {
     return predictiveFeaturesData.filter((item) => {
       const matchesPillar = selectedPillar === 'ALL' || item.pilar === selectedPillar;
+      const q = searchQuery.toLowerCase().trim();
+      if (!q) return matchesPillar;
+
       const matchesSearch = 
-        item.sigla.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.endpointMCP.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.impactoNegocio.toLowerCase().includes(searchQuery.toLowerCase());
+        item.sigla.toLowerCase().includes(q) ||
+        item.nome.toLowerCase().includes(q) ||
+        (item.resumoCard && item.resumoCard.toLowerCase().includes(q)) ||
+        (item.comoAvalia && item.comoAvalia.toLowerCase().includes(q)) ||
+        item.impactoNegocio.toLowerCase().includes(q);
+
       return matchesPillar && matchesSearch;
     });
   }, [selectedPillar, searchQuery]);
@@ -95,6 +101,13 @@ export const PredictiveMatrix: React.FC = () => {
     }
   };
 
+  const getPilarShortName = (pilar: MatrixPillar) => {
+    if (pilar === 'Desempenho dos Anúncios & Audiência') return 'Anúncios & Audiência';
+    if (pilar === 'Sinais & Telemetria CAPI') return 'Sinais & CAPI';
+    if (pilar === 'Atendimento & Conversão WhatsApp') return 'WhatsApp & Atendimento';
+    return 'Caixa & ERP';
+  };
+
   return (
     <div className="space-y-5">
       {/* Section Header & Status Overview */}
@@ -107,14 +120,14 @@ export const PredictiveMatrix: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg font-bold text-white tracking-tight">
-                  Matriz Preditiva de 20 Funcionalidades v2.0
+                  Matriz Preditiva de 20 Indicadores de Performance
                 </h2>
                 <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 font-semibold">
-                  4 Pilares
+                  4 Pilares Estratégicos
                 </span>
               </div>
               <p className="text-xs text-text-muted mt-0.5">
-                Arquitetura de telemetria algorítmica correlacionando leilão, CAPI e faturamento ERP Kota.
+                Visão preditiva unificada correlacionando anúncios, agilidade de atendimento e fechamento de vendas no ERP Kota.
               </p>
             </div>
           </div>
@@ -171,42 +184,53 @@ export const PredictiveMatrix: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Filtrar por sigla, nome ou MCP..."
+            placeholder="Filtrar por sigla, nome ou objetivo..."
             className="w-full bg-[#101010] border border-zinc-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-cyan-500 transition-colors"
           />
         </div>
       </div>
 
-      {/* Minimalist Cards Grid (#141414) */}
+      {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {filteredFeatures.map((feature) => (
           <div
             key={feature.id}
-            className="bg-[#141414] border border-[#262626] hover:border-zinc-700/80 rounded-xl p-4 transition-all duration-200 flex flex-col justify-between group shadow-sm hover:shadow-md"
+            className="bg-[#141414] border border-[#262626] hover:border-zinc-700 rounded-xl p-4 transition-all duration-200 flex flex-col justify-between group shadow-sm hover:shadow-md"
           >
-            {/* Top row: Sigla (JetBrains Mono) + Status Badge */}
             <div>
+              {/* Top row: Sigla (JetBrains Mono) + Pillar Tag + Status Badge */}
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-cyan-400 font-bold text-sm tracking-wide bg-cyan-950/30 px-2 py-0.5 rounded border border-cyan-900/40">
+                  <span className="font-mono text-cyan-400 font-bold text-sm tracking-wide bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-900/50">
                     {feature.sigla}
                   </span>
-                  <span className="text-[10px] font-mono text-zinc-500">
-                    {feature.pilar.split(':')[0]}
+                  <span className="text-[10px] font-medium text-zinc-400">
+                    {getPilarShortName(feature.pilar)}
                   </span>
                 </div>
                 {getStatusBadge(feature.status)}
               </div>
 
               {/* Intuitive Title */}
-              <h3 className="text-sm font-semibold text-white tracking-tight leading-snug line-clamp-1 mb-2">
+              <h3 className="text-sm font-bold text-white tracking-tight leading-snug mb-2.5">
                 {feature.nome}
               </h3>
+
+              {/* Resumo Autoexplicativo Direto na Face do Card */}
+              <div className="bg-[#171b21] border border-cyan-900/35 rounded-lg p-2.5 mb-3">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-cyan-400 mb-1 flex items-center gap-1.5">
+                  <Target className="w-3 h-3 text-cyan-400 shrink-0" />
+                  <span>Objetivo do Indicador</span>
+                </div>
+                <p className="text-xs text-zinc-200 leading-relaxed font-normal">
+                  {feature.resumoCard}
+                </p>
+              </div>
 
               {/* Value & Benchmark metrics */}
               <div className="bg-[#0c0c0c] border border-zinc-800/80 rounded-lg p-2.5 mb-3 flex items-center justify-between">
                 <div>
-                  <div className="text-[10px] font-mono uppercase text-zinc-400">
+                  <div className="text-[10px] font-semibold uppercase text-zinc-400">
                     Valor Observado
                   </div>
                   <div className="text-sm font-bold text-white font-mono mt-0.5">
@@ -214,7 +238,7 @@ export const PredictiveMatrix: React.FC = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-[10px] font-mono uppercase text-zinc-400">
+                  <div className="text-[10px] font-semibold uppercase text-zinc-400">
                     Benchmark / Meta
                   </div>
                   <div className="text-xs font-semibold text-zinc-300 font-mono mt-0.5">
@@ -223,44 +247,39 @@ export const PredictiveMatrix: React.FC = () => {
                 </div>
               </div>
 
-              {/* Formula box */}
-              <div className="mb-3 bg-zinc-900/60 border border-zinc-800/70 rounded-lg p-2 font-mono text-[11px] text-zinc-300 overflow-x-auto whitespace-nowrap scrollbar-none">
-                <span className="text-zinc-400 select-none mr-1.5">ƒ:</span>
-                <span className="text-cyan-300/90">{feature.formula}</span>
+              {/* Explicação Didática e Prática (Substituindo fórmulas matemáticas) */}
+              <div className="mb-3 bg-zinc-900/80 border border-zinc-800/80 rounded-lg p-2.5 text-xs text-zinc-300">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 mb-1 flex items-center gap-1.5">
+                  <Sliders className="w-3 h-3 text-zinc-400 shrink-0" />
+                  <span>Como é avaliado</span>
+                </div>
+                <p className="text-[11px] text-zinc-300 leading-relaxed">
+                  {feature.comoAvalia}
+                </p>
               </div>
 
               {/* Business Impact snippet */}
-              <p className="text-xs text-text-secondary leading-relaxed line-clamp-2 mb-3">
+              <p className="text-xs text-text-secondary leading-relaxed mb-3">
+                <strong className="text-zinc-300 font-medium">Impacto no Caixa: </strong>
                 {feature.impactoNegocio}
               </p>
             </div>
 
-            {/* Bottom: MCP Endpoint Badge & Mandatory Action Button */}
-            <div className="pt-3 border-t border-zinc-800/60 space-y-2.5">
-              {/* Endpoint MCP Badge */}
-              <div className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-400 bg-zinc-900/80 px-2.5 py-1 rounded border border-zinc-800/80">
-                <Server className="w-3 h-3 text-cyan-400 shrink-0" />
-                <span className="truncate" title={feature.endpointMCP}>
-                  {feature.endpointMCP}
-                </span>
+            {/* Bottom: Confidence Score & Entender Indicador Button */}
+            <div className="pt-3 border-t border-zinc-800/60 flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                <span>{feature.confiancaScore}% Confiança</span>
               </div>
 
-              {/* Confidence Score & Mandatory Button */}
-              <div className="flex items-center justify-between gap-2 pt-1">
-                <div className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                  <span>{feature.confiancaScore}% Confiança</span>
-                </div>
-
-                {/* Mandatory [ ? Entender Indicador ] button */}
-                <button
-                  onClick={() => openMetricModal(feature.id)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/90 hover:bg-cyan-950/60 hover:text-cyan-300 hover:border-cyan-800/70 border border-zinc-700/80 text-zinc-200 text-xs font-medium transition-all cursor-pointer shadow-sm"
-                >
-                  <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Entender Indicador</span>
-                </button>
-              </div>
+              {/* [ ? Entender Indicador ] button */}
+              <button
+                onClick={() => openMetricModal(feature.id)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-cyan-950/60 hover:text-cyan-300 hover:border-cyan-800/70 border border-zinc-700/80 text-zinc-200 text-xs font-medium transition-all cursor-pointer shadow-sm"
+              >
+                <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Entender Indicador</span>
+              </button>
             </div>
           </div>
         ))}
@@ -269,7 +288,7 @@ export const PredictiveMatrix: React.FC = () => {
       {filteredFeatures.length === 0 && (
         <div className="text-center py-12 bg-[#121212] rounded-xl border border-zinc-800">
           <Filter className="w-8 h-8 text-zinc-600 mx-auto mb-2" />
-          <h4 className="text-sm font-semibold text-zinc-300">Nenhuma funcionalidade encontrada</h4>
+          <h4 className="text-sm font-semibold text-zinc-300">Nenhum indicador encontrado</h4>
           <p className="text-xs text-zinc-500 mt-1">
             Tente buscar com outra sigla ou limpar os termos do filtro.
           </p>

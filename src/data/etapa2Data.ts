@@ -2,7 +2,7 @@ import { FunnelStage, SpeedToLeadSummary } from '../types/funnelTypes';
 
 /**
  * Dados reais da Esteira Comercial de 7 Etapas (Pós-Clique ao Faturamento ERP)
- * Referência: Reunião Diretoria Kota Dental (Waldir Ward e Lucas) & Relatório Setembro/Abril
+ * Referência: Diretoria Kota Saúde e Beleza & Relatório de Performance Consolidado
  * Investimento Total Mídia: R$ 7.546,00
  */
 export const commercialFunnelStages: FunnelStage[] = [
@@ -11,7 +11,7 @@ export const commercialFunnelStages: FunnelStage[] = [
     order: 1,
     name: 'Cliques em Anúncios',
     subtitle: 'Interesse inicial pós-anúncio Meta Ads',
-    description: 'Volume total de cliques nos links dos anúncios veiculados no Instagram (95%) e Facebook (5%). Ponto inicial do tráfego qualificado de ortodontistas e clínicas.',
+    description: 'Volume total de 4.930 cliques nos links dos anúncios veiculados no Instagram (95%) e Facebook (5%). O valor de R$ 1,53 refere-se estritamente ao Custo por Clique (CPC). O Custo por Lead/Cadastro (CPL) é de R$ 9,66 no consolidado geral e R$ 6,42 na campanha direta, garantindo que o custo de aquisição do contato permaneça altamente econômico e eficiente.',
     volume: 4930,
     unitLabel: 'cliques',
     conversionFromPrevious: 100,
@@ -119,9 +119,9 @@ export const commercialFunnelStages: FunnelStage[] = [
   {
     id: 'stage_7_revenue',
     order: 7,
-    name: 'Faturamento no ERP Kota',
-    subtitle: 'Receita líquida faturada e conciliada',
-    description: 'Valor real transacionado e registrado no ERP da Kota Dental gerado a partir do lote de leads e fechamentos rastreados.',
+    name: 'Faturamento Confirmado',
+    subtitle: 'Receita líquida conciliada no ERP Kota',
+    description: 'Valor real transacionado e registrado no ERP da Kota Dental gerado a partir do lote de leads e fechamentos rastreados: R$ 36.000,00 faturados com ROAS de 4,77x.',
     volume: 36000,
     unitLabel: 'R$ faturados',
     conversionFromPrevious: 100, // 12 contratos faturados

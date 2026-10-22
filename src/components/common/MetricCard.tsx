@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpRight, ArrowDownRight, HelpCircle } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, HelpCircle, Info } from 'lucide-react';
 import { StatusBadge, BadgeStatus } from './StatusBadge';
 
 export interface MetricCardProps {
@@ -14,11 +14,65 @@ export interface MetricCardProps {
   };
   status?: BadgeStatus;
   statusLabel?: string;
+  statusTooltip?: React.ReactNode;
   subtext?: string;
   icon?: React.ReactNode;
   onOpenModal: (metricId: string) => void;
   className?: string;
 }
+
+const getDefaultStatusTooltip = (status: BadgeStatus, label?: string) => {
+  const getInfo = () => {
+    switch (status) {
+      case 'healthy':
+      case 'active':
+        return {
+          title: label || 'Saudável',
+          desc: 'Métrica operando dentro da meta de performance e eficiência.',
+          color: 'text-indicator-green',
+        };
+      case 'warning':
+      case 'in_progress':
+        return {
+          title: label || 'Atenção',
+          desc: 'Oscilação moderada fora da faixa ideal. Monitoramento recomendado.',
+          color: 'text-indicator-amber',
+        };
+      case 'critical':
+        return {
+          title: label || 'Crítico',
+          desc: 'Desvio relevante da meta operacional. Ação corretiva recomendada.',
+          color: 'text-indicator-red',
+        };
+      case 'simulated':
+        return {
+          title: label || 'Simulado',
+          desc: 'Cenário estatístico projetado com base no modelo preditivo.',
+          color: 'text-cyan-400',
+        };
+      default:
+        return {
+          title: label || 'Operacional',
+          desc: 'Indicador em acompanhamento contínuo.',
+          color: 'text-zinc-300',
+        };
+    }
+  };
+
+  const info = getInfo();
+
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center gap-1.5 text-xs font-semibold text-white">
+        <Info className="w-3.5 h-3.5 text-brand-primary" />
+        <span className={info.color}>{info.title}</span>
+      </div>
+      <p className="text-[11px] text-zinc-300 leading-snug">
+        {info.desc}
+      </p>
+    </div>
+  );
+};
 
 export const MetricCard: React.FC<MetricCardProps> = ({
   id,
@@ -28,11 +82,13 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   variationMoM,
   status = 'healthy',
   statusLabel,
+  statusTooltip,
   subtext,
   icon,
   onOpenModal,
   className = '',
 }) => {
+  const resolvedTooltip = statusTooltip || getDefaultStatusTooltip(status, statusLabel);
   // Determine if MoM change is favorable
   const renderVariation = () => {
     if (!variationMoM) return null;
@@ -79,7 +135,6 @@ export const MetricCard: React.FC<MetricCardProps> = ({
             <span className="font-mono text-xs font-medium text-brand-primary tracking-wide uppercase px-1.5 py-0.5 rounded bg-cyan-950/40 border border-cyan-800/40">
               {technicalCode}
             </span>
-            <span className="text-xs text-text-muted font-normal">• Meta Insights</span>
           </div>
           <h3 className="text-sm font-semibold text-text-primary mt-1 tracking-tight">
             {title}
@@ -88,7 +143,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
 
         <div className="flex items-center gap-2">
           {icon && <div className="text-text-muted group-hover:text-text-primary transition-colors">{icon}</div>}
-          <StatusBadge status={status} label={statusLabel} size="sm" />
+          <StatusBadge status={status} label={statusLabel} size="sm" tooltip={resolvedTooltip} />
         </div>
       </div>
 
@@ -114,7 +169,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
         <button
           onClick={() => onOpenModal(id)}
           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium text-text-secondary hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-border hover:border-zinc-700 transition-all cursor-pointer group/btn"
-          title="Ver explicação de negócio, visão técnica e ações no Meta Ads"
+          title="Ver explicação de negócio, visão operacional e diagnóstico da Kota"
         >
           <HelpCircle className="w-3.5 h-3.5 text-brand-primary group-hover/btn:rotate-12 transition-transform" />
           <span>Entender Indicador</span>

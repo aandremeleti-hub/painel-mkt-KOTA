@@ -7,6 +7,7 @@ interface StatusBadgeProps {
   label?: string;
   size?: 'sm' | 'md';
   pulse?: boolean;
+  tooltip?: React.ReactNode;
 }
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({
@@ -14,6 +15,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   label,
   size = 'md',
   pulse = false,
+  tooltip,
 }) => {
   const getStatusConfig = () => {
     switch (status) {
@@ -74,9 +76,9 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   const displayLabel = label || config.defaultLabel;
   const sizeClasses = size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-2.5 py-1 text-xs';
 
-  return (
+  const badgeContent = (
     <span
-      className={`inline-flex items-center gap-1.5 font-medium rounded-full border ${config.bg} ${config.border} ${config.text} ${sizeClasses}`}
+      className={`inline-flex items-center gap-1.5 font-medium rounded-full border ${config.bg} ${config.border} ${config.text} ${sizeClasses} ${tooltip ? 'cursor-help' : ''}`}
     >
       <span className="relative flex h-2 w-2">
         {pulse && (
@@ -88,5 +90,18 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
       </span>
       <span>{displayLabel}</span>
     </span>
+  );
+
+  if (!tooltip) {
+    return badgeContent;
+  }
+
+  return (
+    <div className="relative group/badge inline-flex items-center">
+      {badgeContent}
+      <div className="absolute right-0 top-full mt-2 hidden group-hover/badge:block w-72 p-3 bg-[#18181b] border border-zinc-700/80 rounded-xl shadow-2xl z-50 text-left pointer-events-none animate-fadeIn backdrop-blur-md">
+        {tooltip}
+      </div>
+    </div>
   );
 };

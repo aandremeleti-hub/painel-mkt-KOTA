@@ -80,7 +80,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           onTabChange={setActiveTab}
           selectedPeriod={selectedPeriod}
           onPeriodChange={setSelectedPeriod}
-          mcpOnline={true}
         />
 
         {/* Main Content Area */}
@@ -98,9 +97,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         {/* Minimal Footer */}
         <footer className="border-t border-border py-4 bg-[#0a0a0a] text-center text-xs text-text-muted">
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <span>StartMedia Intelligence • Painel Operacional Kota Saúde e Beleza v2.0</span>
+            <span>StartMedia Intelligence • Painel Operacional Kota Saúde e Beleza</span>
             <span className="font-mono text-[11px] text-zinc-500">
-              Stack: React 19 • Vite • Tailwind CSS • Meta Marketing API Sidecar MCP
+              Stack: React 19 • Vite • Tailwind CSS • Meta Marketing API
             </span>
           </div>
         </footer>

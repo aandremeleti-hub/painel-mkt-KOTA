@@ -6,7 +6,6 @@ import {
   Activity, 
   Zap, 
   CheckCircle2, 
-  Terminal, 
   ArrowRight,
   TrendingUp
 } from 'lucide-react';
@@ -50,17 +49,19 @@ export const MetricModal: React.FC<MetricModalProps> = ({
 
   const handleSimulateAction = () => {
     setActionState('executing');
-    setExecutionLog('Conectando ao Meta Marketing API Sidecar MCP...');
-
-    setTimeout(() => {
-      setExecutionLog('Enviando mutação de otimização para adset / CRM Kota...');
-    }, 600);
+    setExecutionLog('Aplicando ajuste inteligente na conta de anúncios...');
 
     setTimeout(() => {
       setActionState('success');
-      setExecutionLog(`[OK 200] Ação "${metric.recommendedAction.actionId}" disparada com sucesso via MCP.`);
-    }, 1200);
+      setExecutionLog('[OK] Otimização aplicada com sucesso no Meta Ads / CRM Kota.');
+    }, 1000);
   };
+
+  // Resolve user-friendly action button label
+  const rawLabel = metric.recommendedAction.buttonLabel || 'Aplicar Otimização Recomendada';
+  const actionButtonLabel = rawLabel.includes('MCP') 
+    ? 'Aplicar Otimização Recomendada'
+    : rawLabel;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
@@ -88,7 +89,7 @@ export const MetricModal: React.FC<MetricModalProps> = ({
                 </span>
               </div>
               <p className="text-xs text-text-muted mt-0.5">
-                Guia Explicativo Dual-Audience • Gestão Kota Saúde e Beleza
+                Guia Explicativo do Indicador • Kota Saúde e Beleza
               </p>
             </div>
           </div>
@@ -126,12 +127,12 @@ export const MetricModal: React.FC<MetricModalProps> = ({
             </div>
           </div>
 
-          {/* SECTION 2: VISÃO TÉCNICA META ADS */}
+          {/* SECTION 2: VISÃO OPERACIONAL META ADS */}
           <div className="bg-[#161616] border border-border-subtle rounded-xl p-5">
             <div className="flex items-center gap-2 mb-3">
               <Code2 className="w-4 h-4 text-purple-400" />
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-purple-400">
-                2. VISÃO TÉCNICA META ADS & MCP API
+                2. VISÃO OPERACIONAL META ADS
               </span>
             </div>
 
@@ -151,25 +152,22 @@ export const MetricModal: React.FC<MetricModalProps> = ({
               </div>
             </div>
 
-            <div className="mt-3 space-y-1">
-              <span className="text-[11px] font-mono text-text-muted">FÓRMULA MATEMÁTICA</span>
-              <p className="text-xs font-mono text-brand-primary bg-black/60 px-2.5 py-1.5 rounded border border-border-subtle">
-                {metric.technicalView.formula}
-              </p>
-            </div>
-
-            <div className="mt-3 space-y-1">
-              <span className="text-[11px] font-mono text-text-muted">ENDPOINT MCP</span>
-              <p className="text-[11px] font-mono text-zinc-400 bg-black/60 px-2.5 py-1.5 rounded border border-border-subtle truncate select-all">
-                {metric.technicalView.mcpEndpoint}
-              </p>
-            </div>
-
             {metric.technicalView.auctionParameters && (
-              <p className="text-xs text-text-muted mt-2">
-                <strong className="text-zinc-400">Parâmetros do Leilão: </strong>
-                {metric.technicalView.auctionParameters}
-              </p>
+              <div className="mt-3 space-y-1">
+                <span className="text-[11px] font-mono text-text-muted">PARÂMETROS DE LEILÃO & ATRIBUIÇÃO</span>
+                <p className="text-xs text-zinc-300 bg-black/60 px-2.5 py-2 rounded border border-border-subtle leading-relaxed">
+                  {metric.technicalView.auctionParameters}
+                </p>
+              </div>
+            )}
+
+            {metric.technicalView.operationalNotes && (
+              <div className="mt-3 space-y-1">
+                <span className="text-[11px] font-mono text-text-muted">NOTAS OPERACIONAIS</span>
+                <p className="text-xs text-zinc-300 bg-black/60 px-2.5 py-2 rounded border border-border-subtle leading-relaxed">
+                  {metric.technicalView.operationalNotes}
+                </p>
+              </div>
             )}
           </div>
 
@@ -179,7 +177,7 @@ export const MetricModal: React.FC<MetricModalProps> = ({
               <div className="flex items-center gap-2">
                 <Activity className="w-4 h-4 text-emerald-400" />
                 <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400">
-                  3. DIAGNÓSTICO ATUAL NA KOTA (Setembro 2026 vs Histórico)
+                  3. DIAGNÓSTICO ATUAL NA KOTA (Período Consolidado vs Histórico)
                 </span>
               </div>
               <StatusBadge status={metric.kotaDiagnosis.status} size="sm" />
@@ -187,15 +185,15 @@ export const MetricModal: React.FC<MetricModalProps> = ({
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 my-3">
               <div className="bg-black/40 border border-border-subtle p-3 rounded-lg">
-                <span className="text-[11px] text-text-muted">Setembro 2026</span>
+                <span className="text-[11px] text-text-muted">Período Consolidado</span>
                 <div className="text-xl font-extrabold text-white font-mono mt-0.5">
-                  {metric.kotaDiagnosis.septValue}
+                  {metric.kotaDiagnosis.periodValue || metric.kotaDiagnosis.septValue}
                 </div>
               </div>
 
               {metric.kotaDiagnosis.aprilValue && (
                 <div className="bg-black/40 border border-border-subtle p-3 rounded-lg">
-                  <span className="text-[11px] text-text-muted">Abril 2026 (Anterior)</span>
+                  <span className="text-[11px] text-text-muted">Mês Anterior (Referência)</span>
                   <div className="text-xl font-extrabold text-zinc-400 font-mono mt-0.5">
                     {metric.kotaDiagnosis.aprilValue}
                   </div>
@@ -226,7 +224,6 @@ export const MetricModal: React.FC<MetricModalProps> = ({
                   4. AÇÃO RECOMENDADA EM 1 CLIQUE
                 </span>
               </div>
-              <span className="text-[11px] font-mono text-zinc-400">Meta MCP Executor</span>
             </div>
 
             <h4 className="text-sm font-semibold text-white mt-1">
@@ -235,15 +232,6 @@ export const MetricModal: React.FC<MetricModalProps> = ({
             <p className="text-xs text-zinc-300 mt-1 leading-snug">
               {metric.recommendedAction.description}
             </p>
-
-            {/* MCP Command Preview */}
-            <div className="mt-3 bg-black/80 rounded-lg p-2.5 border border-zinc-800 font-mono text-[11px] text-zinc-300 flex items-center justify-between gap-2 overflow-x-auto">
-              <div className="flex items-center gap-2">
-                <Terminal className="w-3.5 h-3.5 text-indicator-green shrink-0" />
-                <span className="text-indicator-green">$</span>
-                <span className="text-zinc-200 select-all">{metric.recommendedAction.mcpCommand}</span>
-              </div>
-            </div>
 
             {/* Feedback / Log */}
             {executionLog && (
@@ -273,7 +261,7 @@ export const MetricModal: React.FC<MetricModalProps> = ({
                 {actionState === 'executing' ? (
                   <>
                     <div className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                    <span>Disparando comando MCP...</span>
+                    <span>Aplicando ajuste inteligente...</span>
                   </>
                 ) : actionState === 'success' ? (
                   <>
@@ -283,7 +271,7 @@ export const MetricModal: React.FC<MetricModalProps> = ({
                 ) : (
                   <>
                     <Zap className="w-3.5 h-3.5 fill-black" />
-                    <span>{metric.recommendedAction.buttonLabel}</span>
+                    <span>{actionButtonLabel}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </>
                 )}
@@ -294,10 +282,10 @@ export const MetricModal: React.FC<MetricModalProps> = ({
 
         {/* Modal Footer */}
         <div className="px-6 py-3 border-t border-border bg-[#151515] flex items-center justify-between text-xs text-text-muted">
-          <span>StartMedia Intelligence • Conexão Meta Ads MCP Ativa</span>
+          <span>StartMedia Intelligence • Kota Saúde e Beleza</span>
           <button
             onClick={onClose}
-            className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-medium transition-colors"
+            className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-medium transition-colors cursor-pointer"
           >
             Fechar Janela
           </button>

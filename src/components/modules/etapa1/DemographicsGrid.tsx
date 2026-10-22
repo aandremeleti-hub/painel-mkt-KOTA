@@ -82,7 +82,9 @@ export const DemographicsGrid: React.FC = () => {
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#141414', borderColor: '#333', borderRadius: '8px', fontSize: '12px' }}
+                    contentStyle={{ backgroundColor: '#1c1c1c', borderColor: '#3f3f46', borderRadius: '8px', fontSize: '12px' }}
+                    itemStyle={{ color: '#ffffff', fontWeight: 600 }}
+                    labelStyle={{ color: '#a1a1aa', fontWeight: 500 }}
                     formatter={(value: any) => [`${value}%`, 'Participação']}
                   />
                 </PieChart>
@@ -137,7 +139,9 @@ export const DemographicsGrid: React.FC = () => {
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#141414', borderColor: '#333', borderRadius: '8px', fontSize: '12px' }}
+                    contentStyle={{ backgroundColor: '#1c1c1c', borderColor: '#3f3f46', borderRadius: '8px', fontSize: '12px' }}
+                    itemStyle={{ color: '#ffffff', fontWeight: 600 }}
+                    labelStyle={{ color: '#a1a1aa', fontWeight: 500 }}
                     formatter={(value: any) => [`${value}%`, 'Alcance']}
                   />
                 </PieChart>
@@ -180,7 +184,9 @@ export const DemographicsGrid: React.FC = () => {
                   <XAxis type="number" domain={[0, 60]} stroke="#555" fontSize={10} tickFormatter={(v) => `${v}%`} />
                   <YAxis type="category" dataKey="placement" stroke="#888" fontSize={10} width={90} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#141414', borderColor: '#333', borderRadius: '8px', fontSize: '12px' }}
+                    contentStyle={{ backgroundColor: '#1c1c1c', borderColor: '#3f3f46', borderRadius: '8px', fontSize: '12px' }}
+                    itemStyle={{ color: '#ffffff', fontWeight: 600 }}
+                    labelStyle={{ color: '#a1a1aa', fontWeight: 500 }}
                     formatter={(value: any) => [`${value}%`, 'Volume']}
                   />
                   <Bar dataKey="percentage" radius={[0, 4, 4, 0]}>
@@ -231,7 +237,9 @@ export const DemographicsGrid: React.FC = () => {
                   <XAxis dataKey="range" stroke="#777" fontSize={9} />
                   <YAxis stroke="#555" fontSize={10} tickFormatter={(v) => `${v}%`} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#141414', borderColor: '#333', borderRadius: '8px', fontSize: '12px' }}
+                    contentStyle={{ backgroundColor: '#1c1c1c', borderColor: '#3f3f46', borderRadius: '8px', fontSize: '12px' }}
+                    itemStyle={{ color: '#ffffff', fontWeight: 600 }}
+                    labelStyle={{ color: '#a1a1aa', fontWeight: 500 }}
                     formatter={(value: any) => [`${value}%`, 'Audiência']}
                   />
                   <Bar dataKey="percentage" fill="#2dd4bf" radius={[4, 4, 0, 0]}>
@@ -284,7 +292,9 @@ export const DemographicsGrid: React.FC = () => {
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#141414', borderColor: '#333', borderRadius: '8px', fontSize: '12px' }}
+                    contentStyle={{ backgroundColor: '#1c1c1c', borderColor: '#3f3f46', borderRadius: '8px', fontSize: '12px' }}
+                    itemStyle={{ color: '#ffffff', fontWeight: 600 }}
+                    labelStyle={{ color: '#a1a1aa', fontWeight: 500 }}
                     formatter={(value: any) => [`${value}%`, 'Volume']}
                   />
                 </PieChart>
@@ -328,8 +338,10 @@ export const DemographicsGrid: React.FC = () => {
                   <XAxis type="number" domain={[0, 40]} stroke="#555" fontSize={10} tickFormatter={(v) => `${v}%`} />
                   <YAxis type="category" dataKey="uf" stroke="#888" fontSize={10} width={45} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#141414', borderColor: '#333', borderRadius: '8px', fontSize: '12px' }}
-                    formatter={(value: any, _name: any, props: any) => [`${value}%`, props.payload.name]}
+                    contentStyle={{ backgroundColor: '#1c1c1c', borderColor: '#3f3f46', borderRadius: '8px', fontSize: '12px' }}
+                    itemStyle={{ color: '#ffffff', fontWeight: 600 }}
+                    labelStyle={{ color: '#e4e4e7', fontWeight: 500 }}
+                    formatter={(value: any, _name: any, props: any) => [`${value}%`, props?.payload?.name || 'Estado']}
                   />
                   <Bar dataKey="percentage" radius={[0, 4, 4, 0]}>
                     {demographicsStates.map((entry, index) => (
