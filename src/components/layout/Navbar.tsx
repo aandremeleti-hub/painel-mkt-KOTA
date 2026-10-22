@@ -4,9 +4,9 @@ import {
   BarChart3, 
   Layers, 
   Cpu, 
-  Calendar,
-  Sparkles
+  Calendar
 } from 'lucide-react';
+import logoKota from '../../assets/logo_kota.png';
 
 export type DashboardTab = 'overview' | 'media' | 'funnel' | 'predictive';
 export type PeriodOption = '7d' | '14d' | '30d_sept';
@@ -31,9 +31,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Brand & Client Identification */}
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-emerald-400 p-[1px] flex items-center justify-center">
-              <div className="w-full h-full bg-[#0e0e0e] rounded-[11px] flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-cyan-400" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-emerald-400 p-[1px] flex items-center justify-center shadow-sm">
+              <div className="w-full h-full bg-[#0e0e0e] rounded-[11px] flex items-center justify-center p-1 overflow-hidden">
+                <img 
+                  src={logoKota} 
+                  alt="Logo Kota Saúde e Beleza" 
+                  className="w-full h-full object-contain"
+                />
               </div>
             </div>
             
